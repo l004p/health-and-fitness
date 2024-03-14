@@ -2,6 +2,15 @@
 #
 # https://gqlgen.com/getting-started/
 
+directive @hasRole(role: Role!) on FIELD_DEFINITION
+
+enum Role {
+  FREE_MEMBER
+  PAID_MEMBER
+  TRAINER
+  ADMIN
+}
+
 type User {
   user_id: ID!
   username: String!
@@ -10,7 +19,7 @@ type User {
 }
 
 type Query {
-  users: [User!]!
+  users: [User!]! @hasRole(role: TRAINER)
 }
 
 input NewUser {

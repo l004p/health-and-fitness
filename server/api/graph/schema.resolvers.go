@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	//"fmt"
 	"server/api/graph/model"
 	"strconv"
 )
@@ -15,10 +14,10 @@ import (
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	//panic(fmt.Errorf("not implemented: CreateUser - createUser"))
 	user := &model.User{
-		UserID: strconv.FormatInt(int64(1), 10),
-		Username: input.Username,
+		UserID:    strconv.FormatInt(int64(1), 10),
+		Username:  input.Username,
 		FirstName: input.FirstName,
-		LastName: input.LastName,
+		LastName:  input.LastName,
 	}
 	return user, nil
 }

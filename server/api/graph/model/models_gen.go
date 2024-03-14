@@ -2,6 +2,12 @@
 
 package model
 
+import (
+	"fmt"
+	"io"
+	"strconv"
+)
+
 type Mutation struct {
 }
 
@@ -20,4 +26,49 @@ type User struct {
 	Username  string `json:"username"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
+}
+
+type Role string
+
+const (
+	RoleFreeMember Role = "FREE_MEMBER"
+	RolePaidMember Role = "PAID_MEMBER"
+	RoleTrainer    Role = "TRAINER"
+	RoleAdmin      Role = "ADMIN"
+)
+
+var AllRole = []Role{
+	RoleFreeMember,
+	RolePaidMember,
+	RoleTrainer,
+	RoleAdmin,
+}
+
+func (e Role) IsValid() bool {
+	switch e {
+	case RoleFreeMember, RolePaidMember, RoleTrainer, RoleAdmin:
+		return true
+	}
+	return false
+}
+
+func (e Role) String() string {
+	return string(e)
+}
+
+func (e *Role) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = Role(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid Role", str)
+	}
+	return nil
+}
+
+func (e Role) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
