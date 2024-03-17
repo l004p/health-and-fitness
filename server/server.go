@@ -5,11 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"fmt"
 	"server/api/graph"
 	"server/api/middleware"
 	"context"
 	"github.com/99designs/gqlgen/graphql"
 	"server/api/graph/model"
+	"server/db/pgconnect"
+	"server/db/pg"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -28,6 +31,26 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
+	}
+
+	ctx := context.Background()
+
+	connection := pgconnect.NewPgConnection(ctx, os.Getenv("DATABASE_URL"))
+	defer connection.Close()
+
+	err = connection.Ping(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	query := pg.New(connection.Db)
+
+	users, err := query.GetAllUsers(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, user := range users {
+		fmt.Printf("%v\n", user)
 	}
 
 	router := mux.NewRouter()
