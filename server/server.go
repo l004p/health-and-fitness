@@ -2,17 +2,19 @@ package main
 
 import (
 	//"fmt"
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"fmt"
 	"server/api/graph"
-	"server/api/middleware"
-	"context"
-	"github.com/99designs/gqlgen/graphql"
 	"server/api/graph/model"
-	"server/db/pgconnect"
+	"server/api/middleware"
 	"server/db/pg"
+	"server/db/pgconnect"
+	"server/services/user"
+
+	"github.com/99designs/gqlgen/graphql"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -43,20 +45,24 @@ func main() {
 		log.Fatal(err)
 	}
 
-	query := pg.New(connection.Db)
+	repo := pg.NewRepository(connection)
 
-	users, err := query.GetAllUsers(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, user := range users {
-		fmt.Printf("%v\n", user)
-	}
+	// query := pg.New(connection.Db)
+
+	// users, err := query.GetAllUsers(ctx)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// for _, user := range users {
+	// 	fmt.Printf("%v\n", user)
+	// }
+
+	fmt.Printf("Printing from repo shit: %d\n", userservice.TestFunction(repo, ctx))
 
 	router := mux.NewRouter()
 	router.Use(middleware.AuthMiddleware())
 
-	c := graph.Config{Resolvers: &graph.Resolver{}}
+	c := graph.Config{Resolvers: &graph.Resolver{Repo: repo}}
 	c.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error){
 		//fmt.Printf("hasRole Directive %s\n", role.String())
 		log.Printf("hasRole Directive %s\n", role)

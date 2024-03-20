@@ -9,11 +9,38 @@ import (
 	"context"
 )
 
-const getAllUsers = `-- name: GetAllUsers :many
+const createUser = `-- name: createUser :one
+INSERT INTO users (username, user_email, user_password, first_name, last_name)
+VALUES ($1, $2, $3, $4, $5)
+RETURNING user_id
+`
+
+type createUserParams struct {
+	Username     string
+	UserEmail    string
+	UserPassword string
+	FirstName    string
+	LastName     string
+}
+
+func (q *Queries) createUser(ctx context.Context, arg createUserParams) (int32, error) {
+	row := q.db.QueryRow(ctx, createUser,
+		arg.Username,
+		arg.UserEmail,
+		arg.UserPassword,
+		arg.FirstName,
+		arg.LastName,
+	)
+	var user_id int32
+	err := row.Scan(&user_id)
+	return user_id, err
+}
+
+const getAllUsers = `-- name: getAllUsers :many
 SELECT user_id, username, user_password, first_name, last_name, user_email FROM users
 `
 
-func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
+func (q *Queries) getAllUsers(ctx context.Context) ([]User, error) {
 	rows, err := q.db.Query(ctx, getAllUsers)
 	if err != nil {
 		return nil, err
@@ -40,22 +67,22 @@ func (q *Queries) GetAllUsers(ctx context.Context) ([]User, error) {
 	return items, nil
 }
 
-const getUserByEmail = `-- name: GetUserByEmail :one
+const getUserByEmail = `-- name: getUserByEmail :one
 SELECT user_id, user_email, first_name, last_name
 FROM users
 WHERE user_email = $1
 `
 
-type GetUserByEmailRow struct {
+type getUserByEmailRow struct {
 	UserID    int32
 	UserEmail string
 	FirstName string
 	LastName  string
 }
 
-func (q *Queries) GetUserByEmail(ctx context.Context, userEmail string) (GetUserByEmailRow, error) {
+func (q *Queries) getUserByEmail(ctx context.Context, userEmail string) (getUserByEmailRow, error) {
 	row := q.db.QueryRow(ctx, getUserByEmail, userEmail)
-	var i GetUserByEmailRow
+	var i getUserByEmailRow
 	err := row.Scan(
 		&i.UserID,
 		&i.UserEmail,
@@ -65,22 +92,22 @@ func (q *Queries) GetUserByEmail(ctx context.Context, userEmail string) (GetUser
 	return i, err
 }
 
-const getUserByID = `-- name: GetUserByID :one
+const getUserByID = `-- name: getUserByID :one
 SELECT user_id, user_email, first_name, last_name
 FROM users
 WHERE user_id = $1
 `
 
-type GetUserByIDRow struct {
+type getUserByIDRow struct {
 	UserID    int32
 	UserEmail string
 	FirstName string
 	LastName  string
 }
 
-func (q *Queries) GetUserByID(ctx context.Context, userID int32) (GetUserByIDRow, error) {
+func (q *Queries) getUserByID(ctx context.Context, userID int32) (getUserByIDRow, error) {
 	row := q.db.QueryRow(ctx, getUserByID, userID)
-	var i GetUserByIDRow
+	var i getUserByIDRow
 	err := row.Scan(
 		&i.UserID,
 		&i.UserEmail,
@@ -90,22 +117,22 @@ func (q *Queries) GetUserByID(ctx context.Context, userID int32) (GetUserByIDRow
 	return i, err
 }
 
-const getUserByUsername = `-- name: GetUserByUsername :one
+const getUserByUsername = `-- name: getUserByUsername :one
 SELECT user_id, user_email, first_name, last_name
 FROM users
 WHERE username = $1
 `
 
-type GetUserByUsernameRow struct {
+type getUserByUsernameRow struct {
 	UserID    int32
 	UserEmail string
 	FirstName string
 	LastName  string
 }
 
-func (q *Queries) GetUserByUsername(ctx context.Context, username string) (GetUserByUsernameRow, error) {
+func (q *Queries) getUserByUsername(ctx context.Context, username string) (getUserByUsernameRow, error) {
 	row := q.db.QueryRow(ctx, getUserByUsername, username)
-	var i GetUserByUsernameRow
+	var i getUserByUsernameRow
 	err := row.Scan(
 		&i.UserID,
 		&i.UserEmail,

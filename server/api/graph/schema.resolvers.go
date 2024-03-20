@@ -7,19 +7,32 @@ package graph
 import (
 	"context"
 	"server/api/graph/model"
+	"server/services/user"
+	"server/core/user"
 	"strconv"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	//panic(fmt.Errorf("not implemented: CreateUser - createUser"))
-	user := &model.User{
-		UserID:    strconv.FormatInt(int64(1), 10),
+	user := duser.User{
 		Username:  input.Username,
+		UserPassword: input.Password,
+		UserEmail: "email@email",
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
 	}
-	return user, nil
+	_, err := userservice.CreateUser(r.Repo, ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	user1 := &model.User{
+		UserID:    strconv.FormatInt(int64(1), 10),
+		Username:  "testName",
+		FirstName: "Justin",
+		LastName:  "Foley",
+	}
+	return user1, nil
 }
 
 // Users is the resolver for the users field.
@@ -39,6 +52,7 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	}
 	var users []*model.User
 	users = append(users, user1, user2)
+	userservice.TestFunction(r.Repo, ctx)
 	return users, nil
 }
 
