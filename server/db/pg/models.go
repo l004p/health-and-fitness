@@ -6,6 +6,11 @@ package pg
 
 import ()
 
+type Role struct {
+	RoleID   int32
+	RoleName string
+}
+
 type User struct {
 	UserID       int32
 	Username     string
@@ -13,4 +18,10 @@ type User struct {
 	FirstName    string
 	LastName     string
 	UserEmail    string
+}
+
+type UserRole struct {
+	UserRolesID int32
+	UserID      int32
+	RoleID      int32
 }

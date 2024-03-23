@@ -5,8 +5,7 @@
 directive @hasRole(role: Role!) on FIELD_DEFINITION
 
 enum Role {
-  FREE_MEMBER
-  PAID_MEMBER
+  MEMBER
   TRAINER
   ADMIN
 }
@@ -14,6 +13,7 @@ enum Role {
 type User {
   user_id: ID!
   username: String!
+  user_email: String!
   first_name: String!
   last_name: String!
 }
@@ -24,6 +24,7 @@ type Query {
 
 input NewUser {
   username: String!
+  user_email: String!
   password: String!
   first_name: String!
   last_name: String!

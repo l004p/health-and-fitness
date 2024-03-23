@@ -11,7 +11,7 @@ import (
 	"server/api/graph/model"
 	"server/api/middleware"
 	"server/db/pg"
-	"server/db/pgconnect"
+	"server/db/connect"
 	"server/services/user"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -37,7 +37,7 @@ func main() {
 
 	ctx := context.Background()
 
-	connection := pgconnect.NewPgConnection(ctx, os.Getenv("DATABASE_URL"))
+	connection := connect.NewPgConnection(ctx, os.Getenv("DATABASE_URL"))
 	defer connection.Close()
 
 	err = connection.Ping(ctx)
@@ -65,6 +65,7 @@ func main() {
 	c := graph.Config{Resolvers: &graph.Resolver{Repo: repo}}
 	c.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error){
 		//fmt.Printf("hasRole Directive %s\n", role.String())
+		//userservice.HasRole(repo, ctx, , role.String())
 		log.Printf("hasRole Directive %s\n", role)
 		return next(ctx)
 	}

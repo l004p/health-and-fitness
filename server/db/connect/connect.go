@@ -1,4 +1,4 @@
-package pgconnect
+package connect
 
 import (
 	"context"

@@ -12,7 +12,7 @@ import (
 const createUser = `-- name: createUser :one
 INSERT INTO users (username, user_email, user_password, first_name, last_name)
 VALUES ($1, $2, $3, $4, $5)
-RETURNING user_id
+RETURNING user_id, username, first_name, last_name, user_email
 `
 
 type createUserParams struct {
@@ -23,7 +23,15 @@ type createUserParams struct {
 	LastName     string
 }
 
-func (q *Queries) createUser(ctx context.Context, arg createUserParams) (int32, error) {
+type createUserRow struct {
+	UserID    int32
+	Username  string
+	FirstName string
+	LastName  string
+	UserEmail string
+}
+
+func (q *Queries) createUser(ctx context.Context, arg createUserParams) (createUserRow, error) {
 	row := q.db.QueryRow(ctx, createUser,
 		arg.Username,
 		arg.UserEmail,
@@ -31,9 +39,15 @@ func (q *Queries) createUser(ctx context.Context, arg createUserParams) (int32, 
 		arg.FirstName,
 		arg.LastName,
 	)
-	var user_id int32
-	err := row.Scan(&user_id)
-	return user_id, err
+	var i createUserRow
+	err := row.Scan(
+		&i.UserID,
+		&i.Username,
+		&i.FirstName,
+		&i.LastName,
+		&i.UserEmail,
+	)
+	return i, err
 }
 
 const getAllUsers = `-- name: getAllUsers :many
@@ -140,4 +154,56 @@ func (q *Queries) getUserByUsername(ctx context.Context, username string) (getUs
 		&i.LastName,
 	)
 	return i, err
+}
+
+const getUserRoles = `-- name: getUserRoles :many
+SELECT r.role_name
+FROM user_roles ur
+INNER JOIN users u 
+ON u.user_id=ur.user_id
+INNER JOIN roles r 
+ON r.role_id=ur.role_id
+WHERE u.user_id=$1
+`
+
+func (q *Queries) getUserRoles(ctx context.Context, userID int32) ([]string, error) {
+	rows, err := q.db.Query(ctx, getUserRoles, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var role_name string
+		if err := rows.Scan(&role_name); err != nil {
+			return nil, err
+		}
+		items = append(items, role_name)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const verifyUserRole = `-- name: verifyUserRole :one
+SELECT u.user_id
+FROM user_roles ur
+INNER JOIN users u 
+ON u.user_id=ur.user_id
+INNER JOIN roles r 
+ON r.role_id=ur.role_id
+WHERE u.user_id=$1 AND r.role_name=$2
+`
+
+type verifyUserRoleParams struct {
+	UserID   int32
+	RoleName string
+}
+
+func (q *Queries) verifyUserRole(ctx context.Context, arg verifyUserRoleParams) (int32, error) {
+	row := q.db.QueryRow(ctx, verifyUserRole, arg.UserID, arg.RoleName)
+	var user_id int32
+	err := row.Scan(&user_id)
+	return user_id, err
 }

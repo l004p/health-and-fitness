@@ -13,6 +13,7 @@ type Mutation struct {
 
 type NewUser struct {
 	Username  string `json:"username"`
+	UserEmail string `json:"user_email"`
 	Password  string `json:"password"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
@@ -24,6 +25,7 @@ type Query struct {
 type User struct {
 	UserID    string `json:"user_id"`
 	Username  string `json:"username"`
+	UserEmail string `json:"user_email"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
@@ -31,22 +33,20 @@ type User struct {
 type Role string
 
 const (
-	RoleFreeMember Role = "FREE_MEMBER"
-	RolePaidMember Role = "PAID_MEMBER"
-	RoleTrainer    Role = "TRAINER"
-	RoleAdmin      Role = "ADMIN"
+	RoleMember  Role = "MEMBER"
+	RoleTrainer Role = "TRAINER"
+	RoleAdmin   Role = "ADMIN"
 )
 
 var AllRole = []Role{
-	RoleFreeMember,
-	RolePaidMember,
+	RoleMember,
 	RoleTrainer,
 	RoleAdmin,
 }
 
 func (e Role) IsValid() bool {
 	switch e {
-	case RoleFreeMember, RolePaidMember, RoleTrainer, RoleAdmin:
+	case RoleMember, RoleTrainer, RoleAdmin:
 		return true
 	}
 	return false
