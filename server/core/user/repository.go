@@ -26,4 +26,5 @@ type UserRepository interface {
 	UserByID(ctx context.Context, id string) (User, error)
 	UserByUsername(ctx context.Context, username string) (User, error)
 	HasRole(ctx context.Context, id string, role string) (bool, error)
+	FindOrCreate(ctx context.Context, input User) (error)
 }

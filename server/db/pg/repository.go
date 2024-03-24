@@ -99,6 +99,7 @@ func (r *repoService) UserByUsername(ctx context.Context, username string) (user
 	}
 	user := user.User{
 		UserID: result.UserID,
+		UserPassword: result.UserPassword,
 		UserEmail: result.UserEmail,
 		FirstName: result.FirstName,
 		LastName: result.LastName,
@@ -122,4 +123,8 @@ func (r *repoService) HasRole(ctx context.Context, id string, role string) (bool
 		return false, err
 	}
 	return true, nil
+}
+
+func (r *repoService) FindOrCreate(ctx context.Context, input user.User) error {
+	return nil
 }

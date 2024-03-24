@@ -2,7 +2,7 @@
 SELECT * FROM users;
 
 -- name: getUserByUsername :one
-SELECT user_id, user_email, first_name, last_name
+SELECT *
 FROM users
 WHERE username = $1;
 

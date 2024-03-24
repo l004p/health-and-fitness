@@ -3,16 +3,17 @@ package main
 import (
 	//"fmt"
 	"context"
-	"fmt"
+	//"fmt"
 	"log"
 	"net/http"
 	"os"
 	"server/api/graph"
 	"server/api/graph/model"
 	"server/api/middleware"
+	"server/api/rest"
 	"server/db/pg"
 	"server/db/connect"
-	"server/services/user"
+	//"server/services/user"
 
 	"github.com/99designs/gqlgen/graphql"
 
@@ -57,23 +58,28 @@ func main() {
 	// 	fmt.Printf("%v\n", user)
 	// }
 
-	fmt.Printf("Printing from repo shit: %d\n", userservice.TestFunction(repo, ctx))
+	// fmt.Printf("Printing from repo shit: %d\n", userservice.TestFunction(repo, ctx))
 
 	router := mux.NewRouter()
-	router.Use(middleware.AuthMiddleware())
+	protected := router.PathPrefix("/query").Subrouter()
+	protected.Use(middleware.AuthMiddleware())
 
 	c := graph.Config{Resolvers: &graph.Resolver{Repo: repo}}
 	c.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error){
 		//fmt.Printf("hasRole Directive %s\n", role.String())
 		//userservice.HasRole(repo, ctx, , role.String())
 		log.Printf("hasRole Directive %s\n", role)
+		
 		return next(ctx)
 	}
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(c))
+	ah :=  rest.NewAuthHandler(repo)
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)
+	router.HandleFunc("/login", ah.Login).Methods("POST")
+	router.HandleFunc("/register", ah.Register).Methods("POST")
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))

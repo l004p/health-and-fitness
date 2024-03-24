@@ -132,26 +132,21 @@ func (q *Queries) getUserByID(ctx context.Context, userID int32) (getUserByIDRow
 }
 
 const getUserByUsername = `-- name: getUserByUsername :one
-SELECT user_id, user_email, first_name, last_name
+SELECT user_id, username, user_password, first_name, last_name, user_email
 FROM users
 WHERE username = $1
 `
 
-type getUserByUsernameRow struct {
-	UserID    int32
-	UserEmail string
-	FirstName string
-	LastName  string
-}
-
-func (q *Queries) getUserByUsername(ctx context.Context, username string) (getUserByUsernameRow, error) {
+func (q *Queries) getUserByUsername(ctx context.Context, username string) (User, error) {
 	row := q.db.QueryRow(ctx, getUserByUsername, username)
-	var i getUserByUsernameRow
+	var i User
 	err := row.Scan(
 		&i.UserID,
-		&i.UserEmail,
+		&i.Username,
+		&i.UserPassword,
 		&i.FirstName,
 		&i.LastName,
+		&i.UserEmail,
 	)
 	return i, err
 }
