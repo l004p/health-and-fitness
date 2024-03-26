@@ -2,7 +2,7 @@ package rest
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	"net/http"
 	//"server/core/user"
 	"server/services/authentication"
@@ -27,13 +27,13 @@ func (lh *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	jsonBytes, err := json.Marshal(token)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	//jsonBytes, err := json.Marshal(token)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
 	w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
-	//fmt.Fprint(w, token)
-	w.Write(jsonBytes)
+	fmt.Fprintln(w, token)
+	//w.Write(jsonBytes)
 }

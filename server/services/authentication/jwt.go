@@ -13,13 +13,13 @@ import (
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
-type jwtCustomClaims struct {
+type JwtCustomClaims struct {
 	UserID string `json:"user_id"`
 	jwt.StandardClaims
 }
 
 func GenerateToken(userID string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwtCustomClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &JwtCustomClaims{
 		UserID: userID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
@@ -34,7 +34,7 @@ func GenerateToken(userID string) (string, error) {
 }
 
 func ValidateToken(token string) (*jwt.Token, error) {
-	return jwt.ParseWithClaims(token, &jwtCustomClaims{}, func (t *jwt.Token) (interface{}, error) {
+	return jwt.ParseWithClaims(token, &JwtCustomClaims{}, func (t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("issue with signing method")
 		}

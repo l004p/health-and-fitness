@@ -8,14 +8,14 @@ import (
 	"net/http"
 	"os"
 	"server/api/graph"
-	"server/api/graph/model"
+	//"server/api/graph/model"
 	"server/api/middleware"
 	"server/api/rest"
 	"server/db/pg"
 	"server/db/connect"
 	//"server/services/user"
 
-	"github.com/99designs/gqlgen/graphql"
+	//"github.com/99designs/gqlgen/graphql"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -61,23 +61,19 @@ func main() {
 	// fmt.Printf("Printing from repo shit: %d\n", userservice.TestFunction(repo, ctx))
 
 	router := mux.NewRouter()
-	protected := router.PathPrefix("/query").Subrouter()
-	protected.Use(middleware.AuthMiddleware())
+	mh :=  middleware.NewMiddlewareHandler(repo)
 
 	c := graph.Config{Resolvers: &graph.Resolver{Repo: repo}}
-	c.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error){
-		//fmt.Printf("hasRole Directive %s\n", role.String())
-		//userservice.HasRole(repo, ctx, , role.String())
-		log.Printf("hasRole Directive %s\n", role)
-		
-		return next(ctx)
-	}
+	c.Directives.HasRole = mh.DirectiveMiddleware
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(c))
 	ah :=  rest.NewAuthHandler(repo)
+	
 
+	protected := router.PathPrefix("/query").Subrouter()
+	protected.Use(mh.AuthMiddleware())
+	protected.Handle("/", srv)
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	router.Handle("/query", srv)
 	router.HandleFunc("/login", ah.Login).Methods("POST")
 	router.HandleFunc("/register", ah.Register).Methods("POST")
 
