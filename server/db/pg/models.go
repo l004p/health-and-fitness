@@ -6,9 +6,19 @@ package pg
 
 import ()
 
+type MemberTrained struct {
+	TrainerID int32
+	MemberID  int32
+}
+
 type Role struct {
 	RoleID   int32
 	RoleName string
+}
+
+type TrainerInterest struct {
+	TrainerID int32
+	Interest  string
 }
 
 type User struct {

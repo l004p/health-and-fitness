@@ -12,3 +12,7 @@ INSERT INTO users (username, user_password, first_name, last_name, user_email) V
 --      (8, 1),
 --      (8, 2),
 --      (8, 3);
+
+--  INSERT INTO member_trained (member_id, trainer_id) VALUES
+--      (2, 6),
+--      (5, 6);
