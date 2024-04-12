@@ -27,4 +27,5 @@ type TrainerRepository interface {
 	RemoveMemberFromRoster(ctx context.Context, trainer user.User, member user.User) (error)
 	GetAllMembersTraining(ctx context.Context, trainer user.User, member user.User) ([]user.User, error)
 	AddInterest(ctx context.Context, trainer user.User, interest Interest) (error)
+	
 }
