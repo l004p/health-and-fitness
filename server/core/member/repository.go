@@ -11,5 +11,5 @@ import (
 // }
 
 type MemberRepository interface {
-	GetAllTrainers(ctx context.Context, member user.User, trainer user.User) ([]user.User, error);
+	GetAllTrainers(ctx context.Context, member user.User, trainer user.User) ([]user.User, error)
 }

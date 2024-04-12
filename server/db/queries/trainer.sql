@@ -22,6 +22,13 @@ SELECT interest
 FROM trainer_interests
 WHERE trainer_id=$1;
 
+-- name: getTrainersByInterest :many
+SELECT u.first_name, u.last_name, u.username
+FROM trainer_interests ti
+INNER JOIN users u
+ON u.user_id=ti.trainer_id
+WHERE ti.interest=$1;
+
 -- name: updateInterest :exec
 UPDATE trainer_interests
 SET interest=$2

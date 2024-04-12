@@ -3,6 +3,9 @@ package pg
 import (
 	"context"
 	"server/core/user"
+	"server/core/member"
+	"server/core/trainer"
+	"server/core/membership"
 	"server/db/connect"
 	"github.com/jackc/pgx/v5"
 	"fmt"
@@ -12,6 +15,9 @@ import (
 
 type Repository interface {
 	user.UserRepository
+	member.MemberRepository
+	trainer.TrainerRepository
+	membership.MembershipRepository
 }
 
 type repoService struct {
