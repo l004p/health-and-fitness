@@ -8,18 +8,127 @@ import (
 	"strconv"
 )
 
+type Bill struct {
+	BillID      string `json:"bill_id"`
+	User        *User  `json:"user"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+	Date        string `json:"date"`
+}
+
+type Class struct {
+	Trainers  []string `json:"trainers"`
+	Room      string   `json:"room"`
+	Title     string   `json:"title"`
+	Capacity  int      `json:"capacity"`
+	StartTime string   `json:"start_time"`
+	EndTime   string   `json:"end_time"`
+}
+
+type ClassStatus struct {
+	ClassID string `json:"class_id"`
+	Status  string `json:"status"`
+}
+
+type ClassTrainer struct {
+	ClassID   string `json:"class_id"`
+	TrainerID string `json:"trainer_id"`
+}
+
+type Equipment struct {
+	EquipmentID     string `json:"equipment_id"`
+	EquipmentType   string `json:"equipment_type"`
+	EquipmentStatus string `json:"equipment_status"`
+	Room            *Room  `json:"room,omitempty"`
+}
+
+type EquipmentStatus struct {
+	EquipmentID string `json:"equipment_id"`
+	Status      string `json:"status"`
+}
+
+type Event struct {
+	EventID     string `json:"event_id"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Status      string `json:"status"`
+	Capacity    int    `json:"capacity"`
+	Filled      int    `json:"filled"`
+}
+
+type Goal struct {
+	GoalID    string `json:"goal_id"`
+	GoalTitle string `json:"goal_title"`
+	GoalDate  string `json:"goal_date"`
+	GoalValue string `json:"goal_value"`
+}
+
+type Membership struct {
+	Description string `json:"description"`
+	Status      string `json:"status"`
+}
+
+type Metric struct {
+	MetricID string `json:"metric_id"`
+	Date     string `json:"date"`
+	Metric   string `json:"metric"`
+}
+
+type MoveEquipment struct {
+	EquipmentID string `json:"equipment_id"`
+	RoomID      string `json:"room_id"`
+}
+
 type Mutation struct {
 }
 
-type NewUser struct {
-	Username  string `json:"username"`
-	UserEmail string `json:"user_email"`
-	Password  string `json:"password"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+type NewGoal struct {
+	GoalTitle string `json:"goal_title"`
+	GoalDate  string `json:"goal_date"`
+	GoalValue string `json:"goal_value"`
+}
+
+type NewMetric struct {
+	Date   string `json:"date"`
+	Metric string `json:"metric"`
+}
+
+type PayBill struct {
+	BillID string `json:"bill_id"`
+}
+
+type Profile struct {
+	User       *User       `json:"user"`
+	Membership *Membership `json:"membership"`
+	Goals      []*Goal     `json:"goals,omitempty"`
+	Metrics    []*Metric   `json:"metrics,omitempty"`
 }
 
 type Query struct {
+}
+
+type Register struct {
+	UserID  string `json:"user_id"`
+	EventID string `json:"event_id"`
+}
+
+type Room struct {
+	RoomID      string       `json:"room_id"`
+	Description string       `json:"description"`
+	Equipment   []*Equipment `json:"equipment,omitempty"`
+}
+
+type Session struct {
+	Room      string `json:"room"`
+	Title     string `json:"title"`
+	Capacity  int    `json:"capacity"`
+	StartTime string `json:"start_time"`
+	EndTime   string `json:"end_time"`
+}
+
+type SessionStatus struct {
+	SessionID string `json:"session_id"`
+	Status    string `json:"status"`
 }
 
 type User struct {

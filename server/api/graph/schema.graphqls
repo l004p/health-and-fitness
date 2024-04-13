@@ -4,6 +4,9 @@
 
 directive @hasRole(role: Role!) on FIELD_DEFINITION
 
+scalar Date
+scalar Timestamp
+
 enum Role {
   MEMBER
   TRAINER
@@ -18,17 +21,151 @@ type User {
   last_name: String!
 }
 
+type Metric {
+  metric_id: ID!
+  date: String!
+  metric: String!
+}
+
+type Goal {
+  goal_id: ID!
+  goal_title: String!
+  goal_date: String!
+  goal_value: String!
+}
+
+type Membership {
+  description: String!
+  status: String!
+}
+
+type Profile {
+  user: User!
+  membership: Membership!
+  goals: [Goal!]
+  metrics: [Metric!]
+}
+
 type Bill {
-  
+  bill_id: ID!
+  user: User!
+  description: String!
+  status: String!
+  date: Date!
+}
+
+type Equipment {
+  equipment_id: ID!
+  equipment_type: String!
+  equipment_status: String!
+  room: Room
+}
+
+type Room {
+  room_id: ID!
+  description: String!
+  equipment: [Equipment!]
+}
+
+type Event {
+  event_id: ID!
+  description: String!
+  type: String!
+  status: String!
+  capacity: Int!
+  filled: Int!
 }
 
 type Query {
-  users: [User!]! @hasRole(role: TRAINER)
-  usersTrained: [User!]! @hasRole(role: TRAINER)
-  trainers: [User!]! @hasRole(role: MEMBER)
+  ViewProfile: Profile! @hasRole(role: MEMBER)
+  ViewUpcomingEvents(type: String): [Event!] @hasRole(role: MEMBER)
+  ViewUpcomingEventsLead(type: String): [Event!] @hasRole(role: TRAINER)
+  GetAllUsersTrained: [User!]! @hasRole(role: TRAINER)
+  SearchMember: [Profile!] @hasRole(role: TRAINER)
+  GetTrainers: [User!] @hasRole(role: MEMBER)
+  GetBills(status: String): [Bill!]! @hasRole(role: MEMBER)
+  ViewAllBills(status: String): [Bill]! @hasRole(role: ADMIN)
+  GetAllEquipment(status: String, type: String): [Equipment!]! @hasRole(role: ADMIN)
+  GetEquipment(id: ID): Equipment! @hasRole(role: ADMIN)
+  GetRooms(status: String): [Room!]! @hasRole(role: ADMIN)
 }
 
+input Register {
+  user_id: ID!
+  event_id: ID!
+}
+
+input EquipmentStatus {
+  equipment_id: ID!
+  status: String!
+}
+
+input MoveEquipment {
+  equipment_id: ID!
+  room_id: ID!
+}
+
+input Class {
+  trainers: [ID!]!
+  room: ID!
+  title: String!
+  capacity: Int!
+  start_time: String!
+  end_time: String!
+}
+
+input Session {
+  room: ID!
+  title: String!
+  capacity: Int!
+  start_time: String!
+  end_time: String!
+}
+
+input SessionStatus {
+  session_id: ID!
+  status: String!
+}
+
+input ClassStatus {
+  class_id: ID!
+  status: String!
+}
+
+input ClassTrainer {
+  class_id: ID!
+  trainer_id: ID!
+}
+
+input PayBill {
+  bill_id: String!
+}
+
+input NewMetric {
+  date: String!
+  metric: String!
+}
+
+input NewGoal {
+  goal_title: String!
+  goal_date: String!
+  goal_value: String!
+}
 
 type Mutation {
-
+  RegisterForEvent(input: Register!): String! @hasRole(role: MEMBER)
+  UnregisterForEvent(input: Register!): String! @hasRole(role: MEMBER)
+  ChangeEquipmentStatus(input: EquipmentStatus!): Equipment! @hasRole(role: ADMIN)
+  MoveEquipment(input: MoveEquipment!): Equipment! @hasRole(role: ADMIN)
+  CreateClass(input: Class!): Event! @hasRole(role: ADMIN)
+  EditClassStatus(input: ClassStatus!): Event! @hasRole(role: ADMIN)
+  AddClassTrainer(input: ClassTrainer!): Event! @hasRole(role: ADMIN)
+  RemoveClassTrainer(input: ClassTrainer!): Event! @hasRole(role: ADMIN)
+  CancelClass(input: ClassStatus!): Event! @hasRole(role: ADMIN)
+  CreateAvailableSession(input: Session!): Event! @hasRole(role: TRAINER)
+  EditSessionStatus(input: SessionStatus!): Event! @hasRole(role: TRAINER)
+  CancelSession(input: SessionStatus!): Event! @hasRole(role: TRAINER)
+  PayBill(input: PayBill!): Bill! @hasRole(role: MEMBER)
+  AddMetric(input: NewMetric!): Metric! @hasRole(role: MEMBER)
+  AddGoal(input: NewGoal!): Goal! @hasRole(role: MEMBER)
 }

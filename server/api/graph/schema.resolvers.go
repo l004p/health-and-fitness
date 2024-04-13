@@ -6,37 +6,157 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"server/api/graph/model"
-	"server/core"
-	"server/services/user"
+	userservice "server/services/user"
 	"strconv"
 )
 
-// CreateUser is the resolver for the createUser field.
-func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	//panic(fmt.Errorf("not implemented: CreateUser - createUser"))
-	user := core.User{
-		Username:     input.Username,
-		UserPassword: input.Password,
-		UserEmail:    input.UserEmail,
-		FirstName:    input.FirstName,
-		LastName:     input.LastName,
-	}
-	user, err := userservice.CreateUser(r.Repo, ctx, user)
-	if err != nil {
-		return nil, err
-	}
-	gqlUser := &model.User{
-		UserID:    strconv.FormatInt(int64(user.UserID), 10),
-		Username:  user.Username,
-		UserEmail: user.UserEmail,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-	}
-	return gqlUser, nil
+// RegisterForEvent is the resolver for the RegisterForEvent field.
+func (r *mutationResolver) RegisterForEvent(ctx context.Context, input model.Register) (string, error) {
+	panic(fmt.Errorf("not implemented: RegisterForEvent - RegisterForEvent"))
 }
 
-// Users is the resolver for the users field.
+// UnregisterForEvent is the resolver for the UnregisterForEvent field.
+func (r *mutationResolver) UnregisterForEvent(ctx context.Context, input model.Register) (string, error) {
+	panic(fmt.Errorf("not implemented: UnregisterForEvent - UnregisterForEvent"))
+}
+
+// ChangeEquipmentStatus is the resolver for the ChangeEquipmentStatus field.
+func (r *mutationResolver) ChangeEquipmentStatus(ctx context.Context, input model.EquipmentStatus) (*model.Equipment, error) {
+	panic(fmt.Errorf("not implemented: ChangeEquipmentStatus - ChangeEquipmentStatus"))
+}
+
+// MoveEquipment is the resolver for the MoveEquipment field.
+func (r *mutationResolver) MoveEquipment(ctx context.Context, input model.MoveEquipment) (*model.Equipment, error) {
+	panic(fmt.Errorf("not implemented: MoveEquipment - MoveEquipment"))
+}
+
+// CreateClass is the resolver for the CreateClass field.
+func (r *mutationResolver) CreateClass(ctx context.Context, input model.Class) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: CreateClass - CreateClass"))
+}
+
+// EditClassStatus is the resolver for the EditClassStatus field.
+func (r *mutationResolver) EditClassStatus(ctx context.Context, input model.ClassStatus) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: EditClassStatus - EditClassStatus"))
+}
+
+// AddClassTrainer is the resolver for the AddClassTrainer field.
+func (r *mutationResolver) AddClassTrainer(ctx context.Context, input model.ClassTrainer) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: AddClassTrainer - AddClassTrainer"))
+}
+
+// RemoveClassTrainer is the resolver for the RemoveClassTrainer field.
+func (r *mutationResolver) RemoveClassTrainer(ctx context.Context, input model.ClassTrainer) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: RemoveClassTrainer - RemoveClassTrainer"))
+}
+
+// CancelClass is the resolver for the CancelClass field.
+func (r *mutationResolver) CancelClass(ctx context.Context, input model.ClassStatus) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: CancelClass - CancelClass"))
+}
+
+// CreateAvailableSession is the resolver for the CreateAvailableSession field.
+func (r *mutationResolver) CreateAvailableSession(ctx context.Context, input model.Session) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: CreateAvailableSession - CreateAvailableSession"))
+}
+
+// EditSessionStatus is the resolver for the EditSessionStatus field.
+func (r *mutationResolver) EditSessionStatus(ctx context.Context, input model.SessionStatus) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: EditSessionStatus - EditSessionStatus"))
+}
+
+// CancelSession is the resolver for the CancelSession field.
+func (r *mutationResolver) CancelSession(ctx context.Context, input model.SessionStatus) (*model.Event, error) {
+	panic(fmt.Errorf("not implemented: CancelSession - CancelSession"))
+}
+
+// PayBill is the resolver for the PayBill field.
+func (r *mutationResolver) PayBill(ctx context.Context, input model.PayBill) (*model.Bill, error) {
+	panic(fmt.Errorf("not implemented: PayBill - PayBill"))
+}
+
+// AddMetric is the resolver for the AddMetric field.
+func (r *mutationResolver) AddMetric(ctx context.Context, input model.NewMetric) (*model.Metric, error) {
+	panic(fmt.Errorf("not implemented: AddMetric - AddMetric"))
+}
+
+// AddGoal is the resolver for the AddGoal field.
+func (r *mutationResolver) AddGoal(ctx context.Context, input model.NewGoal) (*model.Goal, error) {
+	panic(fmt.Errorf("not implemented: AddGoal - AddGoal"))
+}
+
+// ViewProfile is the resolver for the ViewProfile field.
+func (r *queryResolver) ViewProfile(ctx context.Context) (*model.Profile, error) {
+	panic(fmt.Errorf("not implemented: ViewProfile - ViewProfile"))
+}
+
+// ViewUpcomingEvents is the resolver for the ViewUpcomingEvents field.
+func (r *queryResolver) ViewUpcomingEvents(ctx context.Context, typeArg *string) ([]*model.Event, error) {
+	panic(fmt.Errorf("not implemented: ViewUpcomingEvents - ViewUpcomingEvents"))
+}
+
+// ViewUpcomingEventsLead is the resolver for the ViewUpcomingEventsLead field.
+func (r *queryResolver) ViewUpcomingEventsLead(ctx context.Context, typeArg *string) ([]*model.Event, error) {
+	panic(fmt.Errorf("not implemented: ViewUpcomingEventsLead - ViewUpcomingEventsLead"))
+}
+
+// GetAllUsersTrained is the resolver for the GetAllUsersTrained field.
+func (r *queryResolver) GetAllUsersTrained(ctx context.Context) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented: GetAllUsersTrained - GetAllUsersTrained"))
+}
+
+// SearchMember is the resolver for the SearchMember field.
+func (r *queryResolver) SearchMember(ctx context.Context) ([]*model.Profile, error) {
+	panic(fmt.Errorf("not implemented: SearchMember - SearchMember"))
+}
+
+// GetTrainers is the resolver for the GetTrainers field.
+func (r *queryResolver) GetTrainers(ctx context.Context) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented: GetTrainers - GetTrainers"))
+}
+
+// GetBills is the resolver for the GetBills field.
+func (r *queryResolver) GetBills(ctx context.Context, status *string) ([]*model.Bill, error) {
+	panic(fmt.Errorf("not implemented: GetBills - GetBills"))
+}
+
+// ViewAllBills is the resolver for the ViewAllBills field.
+func (r *queryResolver) ViewAllBills(ctx context.Context, status *string) ([]*model.Bill, error) {
+	panic(fmt.Errorf("not implemented: ViewAllBills - ViewAllBills"))
+}
+
+// GetAllEquipment is the resolver for the GetAllEquipment field.
+func (r *queryResolver) GetAllEquipment(ctx context.Context, status *string, typeArg *string) ([]*model.Equipment, error) {
+	panic(fmt.Errorf("not implemented: GetAllEquipment - GetAllEquipment"))
+}
+
+// GetEquipment is the resolver for the GetEquipment field.
+func (r *queryResolver) GetEquipment(ctx context.Context, id *string) (*model.Equipment, error) {
+	panic(fmt.Errorf("not implemented: GetEquipment - GetEquipment"))
+}
+
+// GetRooms is the resolver for the GetRooms field.
+func (r *queryResolver) GetRooms(ctx context.Context, status *string) ([]*model.Room, error) {
+	panic(fmt.Errorf("not implemented: GetRooms - GetRooms"))
+}
+
+// Mutation returns MutationResolver implementation.
+func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+
+// Query returns QueryResolver implementation.
+func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+
+type mutationResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	//panic(fmt.Errorf("not implemented: Users - users"))
 	user1 := &model.User{
@@ -56,12 +176,3 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	userservice.TestFunction(r.Repo, ctx)
 	return users, nil
 }
-
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
-
-// Query returns QueryResolver implementation.
-func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
-
-type mutationResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }

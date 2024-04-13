@@ -10,6 +10,9 @@ WHERE equipment_status=$1;
 SELECT * FROM equipment
 WHERE equipment_type=$1;
 
+-- name: getEquipment :many
+SELECT * FROM equipment;
+
 -- name: getEquipmentByID :one
 SELECT * FROM equipment
 WHERE equipment_id=$1;
