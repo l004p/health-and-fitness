@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS attending_event;

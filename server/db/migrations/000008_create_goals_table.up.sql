@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS goals (
     goal_id SERIAL PRIMARY KEY,
-    member_id INTEGER,
+    member_id INTEGER NOT NULL,
     goal_date DATE DEFAULT CURRENT_DATE + interval '6 months',
     title VARCHAR(25) NOT NULL,
     unit VARCHAR(10) NOT NULL,
