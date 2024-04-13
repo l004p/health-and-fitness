@@ -4,14 +4,14 @@ import (
 	//"net/http"
 	//"encoding/json"
 	//"fmt"
-	"server/core/user"
+	"server/core"
 	//"server/services/authentication"
 )
 
 type AuthHandler struct {
-	ur user.UserRepository
+	ur core.UserRepository
 }
 
-func NewAuthHandler(ur user.UserRepository) *AuthHandler {
+func NewAuthHandler(ur core.UserRepository) *AuthHandler {
 	return &AuthHandler{ ur: ur }
 }

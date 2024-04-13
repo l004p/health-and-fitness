@@ -1,9 +1,8 @@
-package member
+package core
 
 import (
 	"context"
 	//"server/core/trainer"
-	"server/core/user"
 )
 
 // type Member struct {
@@ -11,5 +10,5 @@ import (
 // }
 
 type MemberRepository interface {
-	GetAllTrainers(ctx context.Context, member user.User, trainer user.User) ([]user.User, error)
+	GetAllTrainers(ctx context.Context, member User, trainer User) ([]User, error)
 }

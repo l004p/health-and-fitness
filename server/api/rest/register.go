@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"encoding/json"
 	"log"
-	"server/core/user"
+	"server/core"
 
 )
 
@@ -24,7 +24,7 @@ func (lh *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	user := user.User{
+	user := core.User{
 		Username: registerValue.Username,
 		UserEmail: registerValue.UserEmail,
 		FirstName: registerValue.FirstName,

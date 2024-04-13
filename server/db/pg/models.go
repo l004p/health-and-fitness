@@ -4,16 +4,92 @@
 
 package pg
 
-import ()
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
+
+type AttendingEvent struct {
+	MemberID int32
+	EventID  int32
+}
+
+type Bill struct {
+	BillID          int32
+	UserID          int32
+	BillDescription string
+	BillStatus      string
+	BillDate        pgtype.Date
+}
+
+type CalenderEvent struct {
+	EventID      int32
+	RoomID       int32
+	EventType    string
+	MaxAttendees int32
+	EventStatus  string
+	EventTitle   string
+	StartTime    pgtype.Timestamp
+	EndTime      pgtype.Timestamp
+}
+
+type Equipment struct {
+	EquipmentID     int32
+	EquipmentType   string
+	EquipmentStatus string
+}
+
+type EquipmentRoom struct {
+	RoomID      int32
+	EquipmentID int32
+}
+
+type Goal struct {
+	GoalID    int32
+	MemberID  int32
+	GoalDate  pgtype.Date
+	Title     string
+	Unit      string
+	GoalValue int32
+	GoalType  string
+}
+
+type LeadingEvent struct {
+	TrainerID int32
+	EventID   int32
+}
 
 type MemberTrained struct {
 	TrainerID int32
 	MemberID  int32
 }
 
+type Membership struct {
+	MembershipID     int32
+	MemberID         int32
+	Title            string
+	MembershipStatus string
+	MembershipStart  pgtype.Date
+	MembershipEnd    pgtype.Date
+}
+
+type Metric struct {
+	MetricID     int32
+	MemberID     int32
+	DateRecorded pgtype.Date
+	Unit         string
+	MetricValue  int32
+	MetricType   string
+}
+
 type Role struct {
 	RoleID   int32
 	RoleName string
+}
+
+type Room struct {
+	RoomID          int32
+	Capacity        int32
+	RoomDescription string
 }
 
 type TrainerInterest struct {

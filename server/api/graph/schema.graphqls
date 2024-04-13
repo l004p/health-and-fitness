@@ -18,18 +18,17 @@ type User {
   last_name: String!
 }
 
+type Bill {
+  
+}
+
 type Query {
   users: [User!]! @hasRole(role: TRAINER)
+  usersTrained: [User!]! @hasRole(role: TRAINER)
+  trainers: [User!]! @hasRole(role: MEMBER)
 }
 
-input NewUser {
-  username: String!
-  user_email: String!
-  password: String!
-  first_name: String!
-  last_name: String!
-}
 
 type Mutation {
-  createUser(input: NewUser!): User!
+
 }

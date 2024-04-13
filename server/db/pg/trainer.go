@@ -2,24 +2,24 @@ package pg
 
 import (
 	"context"
-	"server/core/user"
+	"server/core"
 	//"server/core/member"
-	"server/core/trainer"
+	
 	//"server/core/membership"
 )
 
-func (r *repoService) AddMemberToRoster(ctx context.Context, trainer user.User, member user.User) (error) {
+func (r *repoService) AddMemberToRoster(ctx context.Context, trainer core.User, member core.User) (error) {
 	panic("not implemented")
 }
 
-func (r *repoService) RemoveMemberFromRoster(ctx context.Context, trainer user.User, member user.User) (error) {
+func (r *repoService) RemoveMemberFromRoster(ctx context.Context, trainer core.User, member core.User) (error) {
 	panic("not implemented")
 }
 
-func (r *repoService) GetAllMembersTraining(ctx context.Context, trainer user.User, member user.User) ([]user.User, error) {
+func (r *repoService) GetAllMembersTraining(ctx context.Context, trainer core.User, member core.User) ([]core.User, error) {
 	panic("not implemented")
 }
 
-func (r *repoService) AddInterest(ctx context.Context, trainer user.User, interest trainer.Interest) error {
+func (r *repoService) AddInterest(ctx context.Context, trainer core.User, interest core.Interest) error {
 	panic("not implemented")
 }

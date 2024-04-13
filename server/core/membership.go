@@ -1,9 +1,8 @@
-package membership
+package core
 
 import (
 	"time"
 	"context"
-	"server/core/user"
 )
 
 
@@ -30,7 +29,7 @@ type Membership struct {
 }
 
 type MembershipRepository interface {
-	AddMembership(ctx context.Context, user user.User, membership MembershipType) (error)
-	CancelMembership(ctx context.Context, user user.User, membership MembershipType) (error)
-	ValidMembership(ctx context.Context, user user.User) (bool, error)
+	AddMembership(ctx context.Context, user User, membership MembershipType) (error)
+	CancelMembership(ctx context.Context, user User, membership MembershipType) (error)
+	ValidMembership(ctx context.Context, user User) (bool, error)
 }

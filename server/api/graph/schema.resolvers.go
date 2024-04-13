@@ -7,7 +7,7 @@ package graph
 import (
 	"context"
 	"server/api/graph/model"
-	"server/core/user"
+	"server/core"
 	"server/services/user"
 	"strconv"
 )
@@ -15,7 +15,7 @@ import (
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	//panic(fmt.Errorf("not implemented: CreateUser - createUser"))
-	user := user.User{
+	user := core.User{
 		Username:     input.Username,
 		UserPassword: input.Password,
 		UserEmail:    input.UserEmail,

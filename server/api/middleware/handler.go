@@ -1,13 +1,13 @@
 package middleware
 
 import(
-	"server/core/user"
+	"server/core"
 )
 
 type MiddlewareHandler struct {
-	ur user.UserRepository
+	ur core.UserRepository
 }
 
-func NewMiddlewareHandler(ur user.UserRepository) *MiddlewareHandler {
+func NewMiddlewareHandler(ur core.UserRepository) *MiddlewareHandler {
 	return &MiddlewareHandler{ ur: ur }
 }

@@ -2,12 +2,12 @@ package pg
 
 import (
 	"context"
-	"server/core/user"
+	"server/core"
 	//"server/core/member"
 	//"server/core/trainer"
 	//"server/core/membership"
 )
 
-func (r *repoService) GetAllTrainers(ctx context.Context, member user.User, trainer user.User) ([]user.User, error) {
+func (r *repoService) GetAllTrainers(ctx context.Context, member core.User, trainer core.User) ([]core.User, error) {
 	panic("not implemented")
 }

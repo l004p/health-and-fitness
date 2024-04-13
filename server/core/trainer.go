@@ -1,8 +1,7 @@
-package trainer
+package core
 
 import (
 	"context"
-	"server/core/user"
 	//"server/core/member"
 )
 
@@ -23,9 +22,9 @@ const (
 )
 
 type TrainerRepository interface {
-	AddMemberToRoster(ctx context.Context, trainer user.User, member user.User) (error)
-	RemoveMemberFromRoster(ctx context.Context, trainer user.User, member user.User) (error)
-	GetAllMembersTraining(ctx context.Context, trainer user.User, member user.User) ([]user.User, error)
-	AddInterest(ctx context.Context, trainer user.User, interest Interest) (error)
+	AddMemberToRoster(ctx context.Context, trainer User, member User) (error)
+	RemoveMemberFromRoster(ctx context.Context, trainer User, member User) (error)
+	GetAllMembersTraining(ctx context.Context, trainer User, member User) ([]User, error)
+	AddInterest(ctx context.Context, trainer User, interest Interest) (error)
 	
 }

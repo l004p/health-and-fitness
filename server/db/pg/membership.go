@@ -2,20 +2,19 @@ package pg
 
 import (
 	"context"
-	"server/core/user"
+	"server/core"
 	//"server/core/member"
 	//"server/core/trainer"
-	"server/core/membership"
 )
 
-func (r *repoService) AddMembership(ctx context.Context, user user.User, membership membership.MembershipType) (error) {
+func (r *repoService) AddMembership(ctx context.Context, user core.User, membership core.MembershipType) (error) {
 	panic("not implemented")
 }
 
-func (r *repoService) CancelMembership(ctx context.Context, user user.User, membership membership.MembershipType) (error){
+func (r *repoService) CancelMembership(ctx context.Context, user core.User, membership core.MembershipType) (error){
 	panic("not implemented")
 }
 
-func (r *repoService) ValidMembership(ctx context.Context, user user.User) (bool, error) {
+func (r *repoService) ValidMembership(ctx context.Context, user core.User) (bool, error) {
 	panic("not implemented")
 }
