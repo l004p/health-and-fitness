@@ -10,9 +10,8 @@ func (r *repoService) GetAllRooms(ctx context.Context) ([]core.Room, error){
 	var result []core.Room
 	rooms, err := r.getAllRooms(ctx)
 	if err != nil {
-		if err != nil {
-			return nil, err
-		}
+		return nil, err
+
 	}
 	for _, room := range rooms {
 		//fmt.Println(piece.EquipmentID)
