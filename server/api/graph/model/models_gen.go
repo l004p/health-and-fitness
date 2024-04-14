@@ -8,9 +8,14 @@ import (
 	"strconv"
 )
 
+type ActivateEquipment struct {
+	EquipmentID string `json:"equipment_id"`
+	RoomID      string `json:"room_id"`
+}
+
 type Bill struct {
 	BillID      string `json:"bill_id"`
-	User        *User  `json:"user"`
+	UserID      string `json:"user_id"`
 	Description string `json:"description"`
 	Status      string `json:"status"`
 	Date        string `json:"date"`
@@ -35,6 +40,11 @@ type ClassTrainer struct {
 	TrainerID string `json:"trainer_id"`
 }
 
+type DeactivateEquipment struct {
+	EquipmentID     string `json:"equipment_id"`
+	EquipmentStatus string `json:"equipment_status"`
+}
+
 type Equipment struct {
 	EquipmentID     string `json:"equipment_id"`
 	EquipmentType   string `json:"equipment_type"`
@@ -42,18 +52,14 @@ type Equipment struct {
 	Room            *Room  `json:"room,omitempty"`
 }
 
-type EquipmentStatus struct {
-	EquipmentID string `json:"equipment_id"`
-	Status      string `json:"status"`
-}
-
 type Event struct {
-	EventID     string `json:"event_id"`
-	Description string `json:"description"`
-	Type        string `json:"type"`
-	Status      string `json:"status"`
-	Capacity    int    `json:"capacity"`
-	Filled      int    `json:"filled"`
+	TrainersID  []string `json:"trainers_id"`
+	EventID     string   `json:"event_id"`
+	Description string   `json:"description"`
+	Type        string   `json:"type"`
+	Status      string   `json:"status"`
+	Capacity    int      `json:"capacity"`
+	Filled      int      `json:"filled"`
 }
 
 type Goal struct {
@@ -113,9 +119,8 @@ type Register struct {
 }
 
 type Room struct {
-	RoomID      string       `json:"room_id"`
-	Description string       `json:"description"`
-	Equipment   []*Equipment `json:"equipment,omitempty"`
+	RoomID      string `json:"room_id"`
+	Description string `json:"description"`
 }
 
 type Session struct {

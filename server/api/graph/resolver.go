@@ -9,5 +9,6 @@ import (
 )
 
 type Resolver struct{
+	//any data source repository that implements the correct interface would work
 	Repo pg.Repository
 }

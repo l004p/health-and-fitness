@@ -96,3 +96,31 @@ INSERT INTO attending_event (member_id, event_id) VALUES
     (1, 1),
     (2, 1),
     (6, 1);
+
+INSERT INTO equipment_rooms (room_id, equipment_id) VALUES
+    (3, 7),
+    (3, 8),
+    (3, 9),
+    (3, 10),
+    (3, 11),
+    (3, 14);
+
+INSERT INTO bills (user_id, bill_description, bill_status) VALUES
+    (8, 'CLASS', 'PENDING'),
+    (8, 'REGULAR MEMBERSHIP', 'CLEARED'),
+    (8, 'CLASS', 'CANCELLED');
+
+INSERT INTO bills (user_id, bill_description, bill_status) VALUES
+    (5, 'CLASS', 'PENDING'),
+    (5, 'REGULAR MEMBERSHIP', 'CLEARED'),
+    (5, 'CLASS', 'CANCELLED');
+
+INSERT INTO bills (user_id, bill_description, bill_status) VALUES
+    (6, 'CLASS', 'PENDING'),
+    (6, 'EXTENDED MEMBERSHIP', 'CANCELLED'),
+    (6, 'CLASS', 'CANCELLED');
+
+INSERT INTO bills (user_id, bill_description, bill_status) VALUES
+    (5, 'CLASS', 'PENDING'),
+    (5, 'EXTENDED MEMBERSHIP', 'PENDING'),
+    (5, 'CLASS', 'PENDING');

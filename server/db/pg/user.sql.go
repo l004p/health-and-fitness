@@ -107,7 +107,7 @@ func (q *Queries) getUserByEmail(ctx context.Context, userEmail string) (getUser
 }
 
 const getUserByID = `-- name: getUserByID :one
-SELECT user_id, user_email, first_name, last_name
+SELECT user_id, user_email, username, first_name, last_name
 FROM users
 WHERE user_id = $1
 `
@@ -115,6 +115,7 @@ WHERE user_id = $1
 type getUserByIDRow struct {
 	UserID    int32
 	UserEmail string
+	Username  string
 	FirstName string
 	LastName  string
 }
@@ -125,6 +126,7 @@ func (q *Queries) getUserByID(ctx context.Context, userID int32) (getUserByIDRow
 	err := row.Scan(
 		&i.UserID,
 		&i.UserEmail,
+		&i.Username,
 		&i.FirstName,
 		&i.LastName,
 	)

@@ -7,7 +7,7 @@ FROM users
 WHERE username = $1;
 
 -- name: getUserByID :one
-SELECT user_id, user_email, first_name, last_name
+SELECT user_id, user_email, username, first_name, last_name
 FROM users
 WHERE user_id = $1;
 

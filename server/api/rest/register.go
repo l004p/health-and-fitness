@@ -1,12 +1,13 @@
 package rest
 
 import (
-	"net/http"
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"log"
+	"net/http"
 	"server/core"
-
+	"server/services/authentication"
+	//userservice "server/services/user"
 )
 
 type registerValues struct {
@@ -24,6 +25,11 @@ func (lh *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
+	if registerValue.Username == "" || registerValue.UserEmail == "" || registerValue.FirstName == "" || registerValue.LastName == "" || registerValue.Password == "" {
+		log.Println("all fields must be filled")
+		return
+	}
+
 	user := core.User{
 		Username: registerValue.Username,
 		UserEmail: registerValue.UserEmail,
@@ -31,7 +37,9 @@ func (lh *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		LastName: registerValue.LastName,
 		UserPassword: registerValue.Password,
 	}
-	err = lh.ur.FindOrCreate(r.Context(), user)
+	//err = lh.ur.FindOrCreate(r.Context(), user)
+	//err = userservice.FindOrCreate(lh.ur, r.Context(), user)
+	err = authentication.Register(lh.ur, r.Context(), user)
 	if err != nil {
 		log.Println(err)
 		return

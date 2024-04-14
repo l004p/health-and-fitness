@@ -16,3 +16,6 @@ WHERE user_id=$1;
 UPDATE bills
 SET bill_status='CANCELLED'
 WHERE bill_id=$1;
+
+-- name: getBillByID :one
+SELECT * FROM bills WHERE bill_id=$1;

@@ -104,15 +104,10 @@ func (q *Queries) getRoomsByMinimumCapacity(ctx context.Context, capacity int32)
 
 const removeEquipmentFromRoom = `-- name: removeEquipmentFromRoom :exec
 DELETE FROM equipment_rooms
-WHERE room_id=$1 AND equipment_id=$2
+WHERE equipment_id=$1
 `
 
-type removeEquipmentFromRoomParams struct {
-	RoomID      int32
-	EquipmentID int32
-}
-
-func (q *Queries) removeEquipmentFromRoom(ctx context.Context, arg removeEquipmentFromRoomParams) error {
-	_, err := q.db.Exec(ctx, removeEquipmentFromRoom, arg.RoomID, arg.EquipmentID)
+func (q *Queries) removeEquipmentFromRoom(ctx context.Context, equipmentID int32) error {
+	_, err := q.db.Exec(ctx, removeEquipmentFromRoom, equipmentID)
 	return err
 }

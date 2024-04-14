@@ -148,6 +148,43 @@ func (q *Queries) getTrainersByInterest(ctx context.Context, interest string) ([
 	return items, nil
 }
 
+const getUserByName = `-- name: getUserByName :many
+SELECT username, first_name, last_name
+FROM users
+WHERE first_name=$1 OR last_name=$2
+`
+
+type getUserByNameParams struct {
+	FirstName string
+	LastName  string
+}
+
+type getUserByNameRow struct {
+	Username  string
+	FirstName string
+	LastName  string
+}
+
+func (q *Queries) getUserByName(ctx context.Context, arg getUserByNameParams) ([]getUserByNameRow, error) {
+	rows, err := q.db.Query(ctx, getUserByName, arg.FirstName, arg.LastName)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []getUserByNameRow
+	for rows.Next() {
+		var i getUserByNameRow
+		if err := rows.Scan(&i.Username, &i.FirstName, &i.LastName); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const removeMemberFromRoster = `-- name: removeMemberFromRoster :exec
 DELETE FROM member_trained
 WHERE trainer_id=$1 AND member_id=$2

@@ -30,7 +30,7 @@ func Login(r core.UserRepository, ctx context.Context, username string, password
 }
 
 func Register(r core.UserRepository, ctx context.Context, input core.User) error {
-	err := r.FindOrCreate(ctx, input)
+	err := userservice.FindOrCreate(r, ctx, input)
 	if err != nil {
 		return err
 	}

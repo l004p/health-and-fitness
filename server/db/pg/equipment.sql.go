@@ -105,10 +105,56 @@ func (q *Queries) getEquipmentByType(ctx context.Context, equipmentType string) 
 	return items, nil
 }
 
-const updateStatus = `-- name: updateStatus :exec
+const getEquipmentByTypeAndStatus = `-- name: getEquipmentByTypeAndStatus :many
+SELECT equipment_id, equipment_type, equipment_status FROM equipment
+WHERE equipment_status=$1 AND equipment_type=$2
+`
+
+type getEquipmentByTypeAndStatusParams struct {
+	EquipmentStatus string
+	EquipmentType   string
+}
+
+func (q *Queries) getEquipmentByTypeAndStatus(ctx context.Context, arg getEquipmentByTypeAndStatusParams) ([]Equipment, error) {
+	rows, err := q.db.Query(ctx, getEquipmentByTypeAndStatus, arg.EquipmentStatus, arg.EquipmentType)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Equipment
+	for rows.Next() {
+		var i Equipment
+		if err := rows.Scan(&i.EquipmentID, &i.EquipmentType, &i.EquipmentStatus); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getRoomEquipmentIn = `-- name: getRoomEquipmentIn :one
+SELECT r.room_id, r.capacity, r.room_description 
+FROM rooms r 
+INNER JOIN equipment_rooms er 
+ON r.room_id=er.room_id
+WHERE er.equipment_id=$1
+`
+
+func (q *Queries) getRoomEquipmentIn(ctx context.Context, equipmentID int32) (Room, error) {
+	row := q.db.QueryRow(ctx, getRoomEquipmentIn, equipmentID)
+	var i Room
+	err := row.Scan(&i.RoomID, &i.Capacity, &i.RoomDescription)
+	return i, err
+}
+
+const updateStatus = `-- name: updateStatus :one
 UPDATE equipment
 SET equipment_status=$2
 WHERE equipment_id=$1
+RETURNING equipment_id, equipment_status, equipment_type
 `
 
 type updateStatusParams struct {
@@ -116,7 +162,15 @@ type updateStatusParams struct {
 	EquipmentStatus string
 }
 
-func (q *Queries) updateStatus(ctx context.Context, arg updateStatusParams) error {
-	_, err := q.db.Exec(ctx, updateStatus, arg.EquipmentID, arg.EquipmentStatus)
-	return err
+type updateStatusRow struct {
+	EquipmentID     int32
+	EquipmentStatus string
+	EquipmentType   string
+}
+
+func (q *Queries) updateStatus(ctx context.Context, arg updateStatusParams) (updateStatusRow, error) {
+	row := q.db.QueryRow(ctx, updateStatus, arg.EquipmentID, arg.EquipmentStatus)
+	var i updateStatusRow
+	err := row.Scan(&i.EquipmentID, &i.EquipmentStatus, &i.EquipmentType)
+	return i, err
 }

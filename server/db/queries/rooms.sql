@@ -4,7 +4,7 @@ VALUES ($1, $2);
 
 -- name: removeEquipmentFromRoom :exec
 DELETE FROM equipment_rooms
-WHERE room_id=$1 AND equipment_id=$2;
+WHERE equipment_id=$1;
 
 -- name: getEquipmentInRoom :many
 SELECT e.equipment_id, e.equipment_type, e.equipment_status

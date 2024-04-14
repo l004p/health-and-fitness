@@ -6,6 +6,7 @@ import (
 	//"server/db/pg"
 	"server/core"
 
+	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -77,4 +78,19 @@ func HasRole(r core.UserRepository, ctx context.Context, id string, role string)
 		return false, err
 	}
 	return result, nil
+}
+
+func FindOrCreate(r core.UserRepository, ctx context.Context, user core.User) (error) {
+	u, err := UserByEmail(r, ctx, user.UserEmail)
+	if err != nil && err != pgx.ErrNoRows {
+		return err
+	}
+	if u.Username == "" {
+		_, err := CreateUser(r, ctx, user)
+		if err != nil {
+			return err
+		}
+	}
+	//panic("not implemented")
+	return nil
 }

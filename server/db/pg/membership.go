@@ -7,6 +7,8 @@ import (
 	//"server/core/trainer"
 )
 
+//TODO: membership needs different unique constraint
+
 func (r *repoService) AddMembership(ctx context.Context, user core.User, membership core.MembershipType) (error) {
 	panic("not implemented")
 }

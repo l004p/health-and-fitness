@@ -17,7 +17,7 @@ import (
 	//"server/core/user"
 )
 
-type ctxKey string
+type CtxKey string
 
 func (mh *MiddlewareHandler) AuthMiddleware() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
@@ -46,7 +46,7 @@ func (mh *MiddlewareHandler) AuthMiddleware() func(http.Handler) http.Handler {
 				http.Error(w, "error with user", http.StatusForbidden)
 				return
 			}
-			const userID ctxKey = "userID"
+			const userID CtxKey = "userID"
 			var userIDValue string = claim.UserID
 			ctx := context.WithValue(r.Context(), userID, userIDValue)
 
@@ -61,8 +61,8 @@ func (mh *MiddlewareHandler) DirectiveMiddleware(ctx context.Context, obj interf
 	//fmt.Printf("hasRole Directive %s\n", role.String())
 	//userservice.HasRole(repo, ctx, , role.String())
 	log.Printf("hasRole Directive %s\n", role)
-	getID := ctx.Value(ctxKey("userID")).(string)
-	hasRole, err := mh.ur.HasRole( ctx, getID, role.String())
+	getID := ctx.Value(CtxKey("userID")).(string)
+	hasRole, err := mh.ur.HasRole(ctx, getID, role.String())
 	if err != nil || !hasRole {
 		return nil, &gqlerror.Error{
 			Message: "Access Denied",

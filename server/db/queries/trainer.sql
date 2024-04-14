@@ -38,3 +38,8 @@ WHERE trainer_id=$1;
 DELETE FROM trainer_interests
 WHERE trainer_id=$1 AND interest=$2;
 
+-- name: getUserByName :many
+SELECT username, first_name, last_name
+FROM users
+WHERE first_name=$1 OR last_name=$2;
+

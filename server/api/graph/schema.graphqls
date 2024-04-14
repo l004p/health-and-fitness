@@ -23,14 +23,14 @@ type User {
 
 type Metric {
   metric_id: ID!
-  date: String!
+  date: Date!
   metric: String!
 }
 
 type Goal {
   goal_id: ID!
   goal_title: String!
-  goal_date: String!
+  goal_date: Date!
   goal_value: String!
 }
 
@@ -48,7 +48,7 @@ type Profile {
 
 type Bill {
   bill_id: ID!
-  user: User!
+  user_id: ID!
   description: String!
   status: String!
   date: Date!
@@ -64,10 +64,10 @@ type Equipment {
 type Room {
   room_id: ID!
   description: String!
-  equipment: [Equipment!]
 }
 
 type Event {
+  trainers_id: [ID!]!
   event_id: ID!
   description: String!
   type: String!
@@ -81,13 +81,13 @@ type Query {
   ViewUpcomingEvents(type: String): [Event!] @hasRole(role: MEMBER)
   ViewUpcomingEventsLead(type: String): [Event!] @hasRole(role: TRAINER)
   GetAllUsersTrained: [User!]! @hasRole(role: TRAINER)
-  SearchMember: [Profile!] @hasRole(role: TRAINER)
+  SearchMember(firstname: String, lastname: String): [Profile!] @hasRole(role: TRAINER)
   GetTrainers: [User!] @hasRole(role: MEMBER)
   GetBills(status: String): [Bill!]! @hasRole(role: MEMBER)
-  ViewAllBills(status: String): [Bill]! @hasRole(role: ADMIN)
+  ViewAllBills(status: String, id: ID): [Bill]! @hasRole(role: ADMIN)
   GetAllEquipment(status: String, type: String): [Equipment!]! @hasRole(role: ADMIN)
-  GetEquipment(id: ID): Equipment! @hasRole(role: ADMIN)
-  GetRooms(status: String): [Room!]! @hasRole(role: ADMIN)
+  GetEquipment(id: ID!): Equipment! @hasRole(role: ADMIN)
+  GetRooms: [Room!]! @hasRole(role: ADMIN)
 }
 
 input Register {
@@ -95,9 +95,14 @@ input Register {
   event_id: ID!
 }
 
-input EquipmentStatus {
+input ActivateEquipment {
   equipment_id: ID!
-  status: String!
+  room_id: ID!
+}
+
+input DeactivateEquipment {
+  equipment_id: ID!
+  equipment_status: String!
 }
 
 input MoveEquipment {
@@ -110,16 +115,16 @@ input Class {
   room: ID!
   title: String!
   capacity: Int!
-  start_time: String!
-  end_time: String!
+  start_time: Timestamp!
+  end_time: Timestamp!
 }
 
 input Session {
   room: ID!
   title: String!
   capacity: Int!
-  start_time: String!
-  end_time: String!
+  start_time: Timestamp!
+  end_time: Timestamp!
 }
 
 input SessionStatus {
@@ -142,30 +147,32 @@ input PayBill {
 }
 
 input NewMetric {
-  date: String!
+  date: Date!
   metric: String!
 }
 
 input NewGoal {
   goal_title: String!
-  goal_date: String!
+  goal_date: Date!
   goal_value: String!
 }
 
 type Mutation {
-  RegisterForEvent(input: Register!): String! @hasRole(role: MEMBER)
-  UnregisterForEvent(input: Register!): String! @hasRole(role: MEMBER)
-  ChangeEquipmentStatus(input: EquipmentStatus!): Equipment! @hasRole(role: ADMIN)
-  MoveEquipment(input: MoveEquipment!): Equipment! @hasRole(role: ADMIN)
-  CreateClass(input: Class!): Event! @hasRole(role: ADMIN)
-  EditClassStatus(input: ClassStatus!): Event! @hasRole(role: ADMIN)
-  AddClassTrainer(input: ClassTrainer!): Event! @hasRole(role: ADMIN)
-  RemoveClassTrainer(input: ClassTrainer!): Event! @hasRole(role: ADMIN)
-  CancelClass(input: ClassStatus!): Event! @hasRole(role: ADMIN)
-  CreateAvailableSession(input: Session!): Event! @hasRole(role: TRAINER)
-  EditSessionStatus(input: SessionStatus!): Event! @hasRole(role: TRAINER)
-  CancelSession(input: SessionStatus!): Event! @hasRole(role: TRAINER)
-  PayBill(input: PayBill!): Bill! @hasRole(role: MEMBER)
-  AddMetric(input: NewMetric!): Metric! @hasRole(role: MEMBER)
-  AddGoal(input: NewGoal!): Goal! @hasRole(role: MEMBER)
+  RegisterForEvent(input: Register!): Boolean! @hasRole(role: MEMBER)
+  UnregisterForEvent(input: Register!): Boolean! @hasRole(role: MEMBER)
+  ActivateEquipment(input: ActivateEquipment!): Equipment! @hasRole(role: ADMIN)
+  DeactivateEquipment(input: DeactivateEquipment!): Equipment! @hasRole(role: ADMIN)
+  MoveEquipment(input: MoveEquipment!): Boolean! @hasRole(role: ADMIN)
+  CreateClass(input: Class!): Boolean! @hasRole(role: ADMIN)
+  EditClassStatus(input: ClassStatus!): Boolean! @hasRole(role: ADMIN)
+  AddClassTrainer(input: ClassTrainer!): Boolean! @hasRole(role: ADMIN)
+  RemoveClassTrainer(input: ClassTrainer!): Boolean! @hasRole(role: ADMIN)
+  CancelClass(input: ClassStatus!): Boolean! @hasRole(role: ADMIN)
+  CreateAvailableSession(input: Session!): Boolean! @hasRole(role: TRAINER)
+  EditSessionStatus(input: SessionStatus!): Boolean! @hasRole(role: TRAINER)
+  CancelSession(input: SessionStatus!): Boolean! @hasRole(role: TRAINER)
+  PayBill(input: PayBill!): Boolean! @hasRole(role: MEMBER)
+  UpdateBillStatus(input: PayBill!): Boolean! @hasRole(role: ADMIN)
+  AddMetric(input: NewMetric!): Boolean! @hasRole(role: MEMBER)
+  AddGoal(input: NewGoal!): Boolean! @hasRole(role: MEMBER)
 }

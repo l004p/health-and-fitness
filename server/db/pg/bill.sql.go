@@ -67,6 +67,23 @@ func (q *Queries) getAllUserBills(ctx context.Context, userID int32) ([]Bill, er
 	return items, nil
 }
 
+const getBillByID = `-- name: getBillByID :one
+SELECT bill_id, user_id, bill_description, bill_status, bill_date FROM bills WHERE bill_id=$1
+`
+
+func (q *Queries) getBillByID(ctx context.Context, billID int32) (Bill, error) {
+	row := q.db.QueryRow(ctx, getBillByID, billID)
+	var i Bill
+	err := row.Scan(
+		&i.BillID,
+		&i.UserID,
+		&i.BillDescription,
+		&i.BillStatus,
+		&i.BillDate,
+	)
+	return i, err
+}
+
 const payBill = `-- name: payBill :exec
 UPDATE bills
 SET bill_status='COMPLETE'
